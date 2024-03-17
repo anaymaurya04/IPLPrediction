@@ -41,7 +41,9 @@
 
         <button type="submit">Predict</button>
     </form>
-    <div id="prediction-result"></div>
+    <div id="prediction-result">
+        
+    </div>
 
     <script>
         // Handle form submission
@@ -56,7 +58,8 @@
                 body: JSON.stringify(jsonData)
             });
             const result = await response.json();
-            document.getElementById('prediction-result').innerText = JSON.stringify(result);
+            // Display the prediction result
+            document.getElementById('prediction-result').innerHTML = `<p>Prediction Result: ${result.prediction}</p>`;
         });
     </script>
 </body>

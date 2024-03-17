@@ -34,13 +34,21 @@ def home():
 # Prediction route
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Get the data from the request
-    data = request.get_json(force=True)
+    try:
+        # Get the data from the request
+        data = request.get_json(force=True)
 
-    # Predict using the model
-    result = pipe.predict_proba(pd.DataFrame(data))
+        # Convert the data into a DataFrame
+        input_data = pd.DataFrame(data, index=[0])  # Ensure the data is in the correct format for the model
 
-    return jsonify(result)
+        # Predict using the model
+        result = pipe.predict_proba(input_data)
+
+        # Return the prediction result as JSON
+        return jsonify({'prediction': result[0]})  # Assuming your model returns a single prediction
+    except Exception as e:
+        # Handle exceptions gracefully
+        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app.run(port=5500,debug=True)
+    app.run(port=5500, debug=True)
